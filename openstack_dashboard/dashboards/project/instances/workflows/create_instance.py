@@ -121,9 +121,9 @@ class SetInstanceDetailsAction(workflows.Action):
 
     device_name = forms.CharField(label=_("Device Name"),
                                   required=False,
-                                  initial="vda",
-                                  help_text=_("Volume mount point (e.g. 'vda' "
-                                              "mounts at '/dev/vda'). Leave "
+                                  initial="sda",
+                                  help_text=_("Volume mount point (e.g. 'sda' "
+                                              "mounts at '/dev/sda'). Leave "
                                               "this field blank to let the "
                                               "system choose a device name "
                                               "for you."))
@@ -413,7 +413,7 @@ class SetInstanceDetailsAction(workflows.Action):
         else:
             vol_type = "vol"
             visible_label = _("Volume")
-        return (("%s:%s" % (volume.id, vol_type)),
+        return (("%s" % (volume.id,)),
                 (_("%(name)s - %(size)s GB (%(label)s)") %
                  {'name': volume.name,
                   'size': volume.size,
@@ -855,11 +855,26 @@ class LaunchInstance(workflows.Workflow):
         source_type = context.get('source_type', None)
         if source_type in ['image_id', 'instance_snapshot_id']:
             image_id = context['source_id']
-        elif source_type in ['volume_id', 'volume_snapshot_id']:
-            dev_mapping_1 = {context['device_name']:
-                             '%s::%s' %
-                             (context['source_id'],
-                              int(bool(context['delete_on_terminate'])))}
+        elif source_type == 'volume_id':
+            dev_mapping_2 = [
+                {'source_type': 'volume',
+                 'destination_type': 'volume',
+                 'delete_on_termination':
+                     int(bool(context['delete_on_terminate'])),
+                 'uuid': context['source_id'],
+                 'boot_index': 0
+                }
+            ]
+        elif source_type == 'volume_snapshot_id':
+            dev_mapping_2 = [
+                {'source_type': 'snapshot',
+                 'destination_type': 'volume',
+                 'delete_on_termination':
+                     int(bool(context['delete_on_terminate'])),
+                 'uuid': context['source_id'],
+                 'boot_index': 0
+                }
+            ]
         elif source_type == 'volume_image_id':
             device_name = context.get('device_name', '').strip() or None
             dev_mapping_2 = [
