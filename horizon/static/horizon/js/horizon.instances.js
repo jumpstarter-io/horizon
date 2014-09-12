@@ -186,12 +186,12 @@ horizon.addInitFunction(function () {
         break;
 
       case "volume_image_id":
-        $("#id_image_id, #id_volume_size, #id_device_name, , #id_delete_on_terminate")
+        $("#id_image_id, #id_volume_size, #id_delete_on_terminate")
           .closest(".control-group").show();
         break;
 
       case "volume_snapshot_id":
-        $("#id_volume_snapshot_id, #id_device_name, #id_delete_on_terminate")
+        $("#id_volume_snapshot_id, #id_delete_on_terminate")
           .closest(".control-group").show();
         break;
     }
