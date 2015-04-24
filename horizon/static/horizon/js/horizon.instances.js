@@ -184,10 +184,10 @@ horizon.addInitFunction(horizon.instances.init = function () {
         elements_list = "#id_volume_id, #id_device_name, #id_delete_on_terminate";
         break;
       case "volume_image_id":
-        elements_list = "#id_image_id, #id_volume_size, #id_device_name, #id_delete_on_terminate";
+        elements_list = "#id_image_id, #id_volume_size, #id_delete_on_terminate";
         break;
       case "volume_snapshot_id":
-        elements_list = "#id_volume_snapshot_id, #id_device_name, #id_delete_on_terminate";
+        elements_list = "#id_volume_snapshot_id, #id_delete_on_terminate";
         break;
     }
     var elements_list_group = $(elements_list).closest(".form-group");
