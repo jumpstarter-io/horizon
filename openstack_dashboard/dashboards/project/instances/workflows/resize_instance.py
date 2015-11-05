@@ -52,6 +52,9 @@ class SetFlavorChoiceAction(workflows.Action):
         flavors = [flavor for flavor in flavors if flavor.id != old_flavor_id]
         if len(flavors) > 1:
             flavors = instance_utils.sort_flavor_list(request, flavors)
+        elif len(flavors) == 1:
+            flavor = flavors[0]
+            flavors = [(flavor.id, flavor.name)]
         if flavors:
             flavors.insert(0, ("", _("Select a New Flavor")))
         else:
